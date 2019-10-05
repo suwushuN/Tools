@@ -27,6 +27,13 @@ namespace wpfClearCodeDirecotries
         }
 
         private List<string> _clearDirs = new List<string>(".vs,bin,obj".Split(',').ToList());
+
+        /// <summary>
+        /// 栈实现深度遍历方式（类似递归）
+        /// 逐个进栈，出栈
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             var dirPath = txtPath.Text.Trim();
@@ -34,7 +41,7 @@ namespace wpfClearCodeDirecotries
             {
 
                 var temp = Directory.GetDirectories(dirPath);
-                Stack<string> stack = new Stack<string>(new List<string> { temp[0] });
+                Stack<string> stack = new Stack<string>(  temp );
                 while (stack.Count>0)
                 {
                     var dir = stack.Pop();
@@ -60,5 +67,45 @@ namespace wpfClearCodeDirecotries
         }
 
 
+        /// <summary>
+        /// 栈实现广度遍历（从根开始逐层遍历）， 也可用Queue实现,【直接用List也可以，缓存下】
+        /// 每次清空栈/队列，然后将所有子项都加入栈/队列
+        /// </summary>
+        private void LevelByLevel()
+        {
+            var dirPath = txtPath.Text.Trim();
+            if (Directory.Exists(dirPath))
+            {
+                Queue<string> q = new Queue<string>();
+                var temp = Directory.GetDirectories(dirPath);
+                Stack<string> stack = new Stack<string>(  temp );
+                while (stack.Count > 0)
+                {
+                    string[] dirs=new string[stack.Count];
+                     stack.CopyTo(dirs, 0);
+                    foreach(var dir in dirs)
+                    {
+                        if (!Directory.Exists(dir))
+                        {
+                            continue;
+                        }
+                        var end = dir.Substring(dir.LastIndexOf('\\') + 1);
+                        if (_clearDirs.Contains(end))
+                        {
+                            Directory.Delete(dir, true);
+                        }
+                        else
+                        {
+                            var subDirs = Directory.GetDirectories(dir);
+                            foreach (var item in subDirs)
+                            {
+                                stack.Push(item);
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
     }
 }
