@@ -1,0 +1,47 @@
+﻿<Window x:Class="WpfMyTreeLoader.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfMyTreeLoader"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.Resources>
+            <local:INT32ToStringConverter x:Key="intToStr"  />
+            <local:BoolToVisibilityConverter x:Key="bToV"/>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <TextBox x:Name="txt" Width="40" Margin="50,0,0,0"></TextBox>
+            <Button Content="查询" Click="Button_Click"/>
+        </StackPanel>
+        <!-- 两棵树的实现方式都可以-->
+        <local:CTreeView x:Name="tv2" Grid.Row="1" Visibility="Collapsed">
+            <local:CTreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding NodesVM}">
+                    <StackPanel Orientation="Horizontal">
+
+                        <TextBlock Text="{Binding DevCountVM, StringFormat=({0}),Converter={StaticResource intToStr}}" />
+                        <TextBlock Text="{Binding NameVM}"/>
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+            </local:CTreeView.ItemTemplate>
+        </local:CTreeView>
+        <TreeView x:Name="tv1" Visibility="Visible" Grid.Row="1">
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding NodesVM}">
+                    <StackPanel Orientation="Horizontal">
+                        
+                    <TextBlock Text="{Binding DevCountVM, StringFormat=({0}),Converter={StaticResource intToStr}}"/>
+                    <TextBlock Text="{Binding NameVM ,StringFormat=KK{0}KK}"/>
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+
+        </TreeView>
+    </Grid>
+</Window>

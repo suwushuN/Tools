@@ -1,0 +1,30 @@
+﻿<Window x:Class="WPFTreeLoaderDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFTreeLoaderDemo"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            
+        <Button Content="同步加载小于100万" Click="Button_Click"/>
+        <Button Content="异步加载100万节点" Click="Button_Click_1"/>
+        </StackPanel>
+        <TreeView x:Name="tv" VirtualizingPanel.IsVirtualizing="True" Grid.Row="1" >
+            <TreeView.ItemTemplate>
+            <HierarchicalDataTemplate ItemsSource="{Binding Nodes }">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{Binding Image}" Height=" 20" Width="20"/>
+                        <TextBlock Text="{Binding Name}"/>
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+    </Grid>
+</Window>
