@@ -1,0 +1,24 @@
+
+           var properties = "ParentIndexVM,NodesVM,ParentNodeVM,IsOrgVM,NodeTypeVM,DevCountVM,IsVisibleVM";//填写对应字段即可，生成代码需要手动替换字符串类型
+            var list = properties.Split(',').Select(c => c.Trim()).ToList();
+            string str = @"  
+        private string _[Type];
+        public string [Type]
+        {
+            get { return _[Type]; }
+            set
+            {
+                _[Type] = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof([Type])));
+            }
+        }
+
+            ";
+            var key = "[Type]";
+            StringBuilder sb = new StringBuilder();
+            foreach (var item in list)
+            {
+                sb.AppendLine(str).Replace(key, item);
+            }
+            var res = sb.ToString();
+       
